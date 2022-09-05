@@ -7,4 +7,5 @@ import zerobase.weather.domain.Memo;
 @Repository
 public interface JpaMemoRepository extends JpaRepository<Memo, Integer> {
 
+
 }
