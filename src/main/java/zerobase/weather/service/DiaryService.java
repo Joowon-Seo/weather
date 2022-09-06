@@ -11,10 +11,12 @@ public class DiaryService {
 	private String apiKey;
 
 	public void createDiary(LocalDate date, String text) {
-
+		getWeatherString();
 	}
 
 	private String getWeatherString(){
-		"https://api.openweathermap.org/data/2.5/weather?q=seoul&appid=" + apiKey;
+		String apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=seoul&appid=" + apiKey;
+		System.out.println(apiUrl);
+		return "";
 	}
 }
