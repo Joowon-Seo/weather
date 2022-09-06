@@ -1,12 +1,20 @@
 package zerobase.weather.service;
 
 import java.time.LocalDate;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DiaryService {
 
+	@Value("${openweathermap.key}")
+	private String apiKey;
+
 	public void createDiary(LocalDate date, String text) {
 
+	}
+
+	private String getWeatherString(){
+		"https://api.openweathermap.org/data/2.5/weather?q=seoul&appid=" + apiKey;
 	}
 }
