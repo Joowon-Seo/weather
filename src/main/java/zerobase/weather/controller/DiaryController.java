@@ -14,6 +14,7 @@ import zerobase.weather.service.DiaryService;
 
 @RestController
 public class DiaryController {
+
 	private final DiaryService diaryService;
 
 	public DiaryController(DiaryService diaryService) {
@@ -27,7 +28,15 @@ public class DiaryController {
 	}
 
 	@GetMapping("/read/diary")
-	List<Diary> readDiary(@RequestParam @DateTimeFormat(iso = ISO.DATE)LocalDate date){
+	List<Diary> readDiary(@RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate date) {
 		return diaryService.readDiary(date);
 	}
+
+	@GetMapping("/read/diaries")
+	List<Diary> readDiaries(@RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate startDate,
+		@RequestParam @DateTimeFormat(iso = ISO.DATE) LocalDate endDate) {
+
+		return diaryService.readDiaries(startDate, endDate);
+	}
+
 }
