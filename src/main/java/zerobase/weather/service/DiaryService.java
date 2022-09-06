@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.net.ssl.HttpsURLConnection;
 import org.json.simple.JSONArray;
@@ -43,6 +44,9 @@ public class DiaryService {
 		nowDiary.setText(text);
 		nowDiary.setDate(date);
 		diaryRepository.save(nowDiary);
+	}
+	public List<Diary> readDiary(LocalDate date) {
+		return diaryRepository.findAllByDate(date);
 	}
 
 	private String getWeatherString() {
@@ -91,4 +95,5 @@ public class DiaryService {
 		resultMap.put("icon", weatherData.get("icon"));
 		return resultMap;
 	}
+
 }
