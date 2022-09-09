@@ -13,10 +13,13 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import zerobase.weather.domain.DateWeather;
 import zerobase.weather.domain.Diary;
+import zerobase.weather.repository.DateWeatherRepository;
 import zerobase.weather.repository.DiaryRepository;
 
 @Service
@@ -27,9 +30,17 @@ public class DiaryService {
 	private String apiKey;
 
 	private final DiaryRepository diaryRepository;
+	private final DateWeatherRepository dateWeatherRepository;
 
-	public DiaryService(DiaryRepository diaryRepository) {
+	public DiaryService(DiaryRepository diaryRepository, DateWeatherRepository dateWeatherRepository) {
 		this.diaryRepository = diaryRepository;
+		this.dateWeatherRepository = dateWeatherRepository;
+	}
+
+	@Transactional
+	@Scheduled(cron = "0 0 1 * * *")
+	public void saveWeatherDate() {
+		dateWeatherRepository.save(getWeatherFromApi());
 	}
 
 	@Transactional(isolation = Isolation.SERIALIZABLE)
@@ -48,6 +59,21 @@ public class DiaryService {
 		nowDiary.setText(text);
 		nowDiary.setDate(date);
 		diaryRepository.save(nowDiary);
+	}
+
+	private DateWeather getWeatherFromApi() {
+
+		// open weather map에서 날씨 데이터 가져오기
+		String weatherData = getWeatherString();
+
+		// 받아온 날씨 json parsing
+		Map<String, Object> parseWeather = parseWeather(weatherData);
+		DateWeather dateWeather = new DateWeather();
+		dateWeather.setDate(LocalDate.now());
+		dateWeather.setWeather(parseWeather.get("main").toString());
+		dateWeather.setIcon(parseWeather.get("icon").toString());
+		dateWeather.setTemperature((Double) parseWeather.get("temp"));
+		return dateWeather;
 	}
 
 	@Transactional(readOnly = true)
