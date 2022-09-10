@@ -13,9 +13,10 @@ import java.time.LocalDate;
 @Entity(name = "date_weather")
 @NoArgsConstructor
 public class DateWeather {
-    @Id
-    private LocalDate date;
-    private String weather;
-    private String icon;
-    private double temperature;
+
+	@Id
+	private LocalDate date;
+	private String weather;
+	private String icon;
+	private double temperature;
 }
