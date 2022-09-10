@@ -15,6 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity(name = "memo")
 public class Memo {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
